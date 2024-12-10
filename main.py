@@ -27,43 +27,43 @@ def NEW_RMC(SCU):
     }
     
     try:
-        # Fetching commodity data from UEXCorp API
+        
         response = requests.get(commodities_url, headers=headers)
         
         if response.status_code == 200:
             try:
                 data = response.json()
 
-                # Ensure 'data' exists and is not empty
+                
                 if 'data' not in data or not data['data']:
                     print("No data found!")
                     return
                 
-                # Find the RMC commodity by its ID (63 in this case)
+                
                 buy_price = None
                 sell_price = None
                 for item in data['data']:
-                    if item.get("id") == 63:  # RMC has id = 63
+                    if item.get("id") == 63:  # RMC has id = 63, other values will respond with different materials
                         buy_price = item.get("price_buy")
                         sell_price = item.get("price_sell")
                         break
 
-                # If prices are not found, print an error and return
+                
                 if buy_price is None or sell_price is None:
                     print("Buy or Sell price not found for RMC.")
                     return
 
-                # Perform the profit calculation
+                
                 total_input = total_SCU * buy_price
                 total_return = total_SCU * sell_price
                 total_profit = total_return - total_input
 
-                # Output the profit, input, and return amounts
+                
                 print(f"Your aUEC input should be: {total_input}")
                 print(f"Your aUEC return should be: {total_return}")
                 print(f"Your aUEC profit should be: {total_profit}")
 
-            except json.JSONDecodeError:
+            except json.JSONDecodeError: # this provides as much response as possible if an error occurs so you may submit an issue on github or make your own modifications to the code
                 print("Error: The API response is not in the expected JSON format.")
         elif response.status_code == 401:
             print("Error: Unauthorized access. Check your API key.")
@@ -73,6 +73,6 @@ def NEW_RMC(SCU):
     except Exception as e:
         print(f"Error: {e}")
 
-# Example usage
+
 SCU = int(input("Enter how much SCU of RMC is being used: "))
 NEW_RMC(SCU)
