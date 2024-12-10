@@ -1,5 +1,4 @@
 # Recycled-Material-Composite-Calculator
-this is an OLD version of a calulator used to determine the profit made from RMC in star citizen
-I am yet to make a change for the current RMC prices.
+this is a calculator that takes the "buy_price" and "sell_price" as json from the uexcorp api ['https://uexcorp.space/api/2.0/commodities']
 # Where is the buy and sell locations
-this calculator uses the old price for buying at rappael and selling and Area18 on Arccorp
+this calculator uses the general prices given under the commodities value.. however I am unsure whether the prices may vary from place to place
