@@ -20,7 +20,21 @@ import requests
 import json
 
 def NEW_RMC(SCU):
+    commodityName = None
+    commodityID = None
     total_SCU = SCU
+    RMC_Query = int(input("Do you wish to search RMC (1), enter your own commodity ID (2), or enter a name (3): "))
+    if (RMC_Query != 1) and (RMC_Query != 2) and (RMC_Query != 3):
+        raise Exception("You may only input 1 (RMC) or 2 (Other ID)!")
+    elif (RMC_Query == 1):
+        commodityID = 63
+        commodityName = "RMC"
+        ID = True
+    elif (RMC_Query == 2):
+        commodityID = int(input("Enter commodity ID: "))
+    elif (RMC_Query == 3):
+        commodityName = input("Enter commodity name (e.g. Agricium): ")
+        name_search = True #so that the program uses the name instead of the ID
     commodities_url = "https://uexcorp.space/api/2.0/commodities"
     headers = {
         'Content-Type': 'application/json'
@@ -43,14 +57,15 @@ def NEW_RMC(SCU):
                 buy_price = None
                 sell_price = None
                 for item in data['data']:
-                    if item.get("id") == 63:  # RMC has id = 63, other values will respond with different materials
+                    if (item.get("id") == commodityID) or (item.get("name") == commodityName):  # RMC has id = 63, other values will respond with different materials
                         buy_price = item.get("price_buy")
                         sell_price = item.get("price_sell")
+                        commodityName_JSON = item.get("name")
                         break
-
+                        
                 
                 if buy_price is None or sell_price is None:
-                    print("Buy or Sell price not found for RMC.")
+                    raise Exception(f"Buy or Sell price not found for {commodityName}.")
                     return
 
                 
@@ -59,9 +74,9 @@ def NEW_RMC(SCU):
                 total_profit = total_return - total_input
 
                 
-                print(f"Your aUEC input should be: {total_input}")
-                print(f"Your aUEC return should be: {total_return}")
-                print(f"Your aUEC profit should be: {total_profit}")
+                print(f"Your aUEC input for {commodityName_JSON} should be: {total_input}")
+                print(f"Your aUEC return from {commodityName_JSON} should be: {total_return}")
+                print(f"Your aUEC profit from {commodityName_JSON} should be: {total_profit}")
 
             except json.JSONDecodeError: # this provides as much response as possible if an error occurs so you may submit an issue on github or make your own modifications to the code
                 print("Error: The API response is not in the expected JSON format.")
@@ -74,5 +89,7 @@ def NEW_RMC(SCU):
         print(f"Error: {e}")
 
 
-SCU = int(input("Enter how much SCU of RMC is being used: "))
+SCU = int(input("Enter how much SCU of material is being used: "))
+if not type(SCU) is int:
+    raise TypeError("Must only accept integer values for SCU")
 NEW_RMC(SCU)
