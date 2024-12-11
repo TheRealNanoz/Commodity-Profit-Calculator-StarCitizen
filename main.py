@@ -62,7 +62,7 @@ def NEW_RMC(SCU):
                         sell_price = item.get("price_sell")
                         commodityName_JSON = item.get("name")
                         break
-                        
+                        # updated V2.1.0
                 
                 if buy_price is None or sell_price is None:
                     raise Exception(f"Buy or Sell price not found for {commodityName}.")
