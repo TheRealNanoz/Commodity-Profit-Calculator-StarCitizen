@@ -35,7 +35,7 @@ def NEW_RMC(SCU):
     elif (RMC_Query == 3):
         commodityName = input("Enter commodity name (e.g. Agricium): ")
         name_search = True #so that the program uses the name instead of the ID
-    commodities_url = "https://uexcorp.space/api/2.0/commodities"
+    commodities_url = "https://api.uexcorp.space/2.0/commodities"
     headers = {
         'Content-Type': 'application/json'
     }
